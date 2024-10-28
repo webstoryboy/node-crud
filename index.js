@@ -1,20 +1,24 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const postRoutes = require("./routes/post");
 const app = express();
+
+// 환경 변수 설정
+require("dotenv").config();
+
+// 미들웨어 설정
 app.use(express.json());
 
-app.get("/", function (req, res) {
-  res.send("Hello World!");
-});
+// 라우트 설정
+app.use("/api/posts", postRoutes);
 
+// 서버 시작
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");
 });
 
+// mongoDB
 mongoose
-  .connect(
-    "mongodb+srv://webstupids:meiu08GCwCQQu04j@cluster0.5ynky.mongodb.net/node?retryWrites=true&w=majority&appName=Cluster0"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
